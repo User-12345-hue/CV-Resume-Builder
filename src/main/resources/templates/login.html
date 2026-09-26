@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Sign in')}"></head>
+<body class="auth-page">
+<header th:replace="~{fragments :: publicNav}"></header>
+<main class="auth-layout">
+    <section class="auth-aside">
+        <p class="eyebrow">Your next chapter starts here</p>
+        <h1>Make your experience impossible to miss.</h1>
+        <p>Build a thoughtful CV, shape it to the role, and take it with you as a print-ready PDF.</p>
+        <div class="auth-proof"><span>01</span> Your details, your design, your story.</div>
+    </section>
+    <section class="auth-card">
+        <p class="eyebrow">Welcome back</p>
+        <h2>Sign in</h2>
+        <p class="muted">Pick up right where you left off.</p>
+        <div class="notice notice-success" th:if="${param.registered}">Your account is ready. Sign in to start building.</div>
+        <div class="notice notice-success" th:if="${param.logout}">You have been signed out.</div>
+        <div class="notice notice-error" th:if="${param.error}">That email and password combination was not recognized.</div>
+        <form th:action="@{/login}" method="post" class="form-stack">
+            <label for="username">Email address</label>
+            <input id="username" name="username" type="email" autocomplete="email" required maxlength="254" autofocus>
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" autocomplete="current-password" required>
+            <button class="button button-full" type="submit">Sign in <span aria-hidden="true">→</span></button>
+        </form>
+        <p class="auth-switch">New to cv.folio? <a th:href="@{/register}">Create your account</a></p>
+    </section>
+</main>
+</body>
+</html>

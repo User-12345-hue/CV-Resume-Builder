@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('My resumes')}"></head>
+<body class="app-page">
+<header th:replace="~{fragments :: appNav}"></header>
+<main class="page-wrap">
+    <section class="welcome-row">
+        <div>
+            <p class="eyebrow">Your workspace</p>
+            <h1 th:text="'Good to see you, ' + ${displayName}">Good to see you</h1>
+            <p class="muted">Every opportunity deserves a resume that feels like you.</p>
+        </div>
+        <a class="button" th:href="@{/resumes/new}"><span aria-hidden="true">＋</span> Create a resume</a>
+    </section>
+
+    <div class="notice notice-success" th:if="${param.deleted}">Resume deleted.</div>
+    <section class="resume-grid" th:if="${!#lists.isEmpty(resumes)}">
+        <article class="resume-card" th:each="resume : ${resumes}">
+            <div class="resume-card-art" th:classappend="${resume.templateId}">
+                <span class="art-name" th:text="${resume.fullName}">Your name</span>
+                <span class="art-rule"></span>
+                <span class="art-lines"></span>
+            </div>
+            <div class="resume-card-body">
+                <div>
+                    <h2 th:text="${resume.title}">Resume title</h2>
+                    <p class="muted" th:text="${resume.professionalTitle != null ? resume.professionalTitle : 'Add your professional title'}">Professional title</p>
+                </div>
+                <p class="card-date" th:text="'Updated ' + ${#temporals.format(resume.updatedAt, 'MMM d, yyyy')}">Updated date</p>
+                <div class="card-actions">
+                    <a class="button button-small" th:href="@{/resumes/{id}/edit(id=${resume.id})}">Edit resume</a>
+                    <a class="button button-quiet button-small" th:href="@{/resumes/{id}/preview(id=${resume.id})}">Preview</a>
+                    <form th:action="@{/resumes/{id}/delete(id=${resume.id})}" method="post">
+                        <button class="button button-danger button-small" type="submit"
+                                th:attr="aria-label='Delete ' + ${resume.title}"
+                                onclick="return confirm('Delete this resume? This cannot be undone.')">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </article>
+    </section>
+
+    <section class="empty-state" th:if="${#lists.isEmpty(resumes)}">
+        <div class="empty-illustration" aria-hidden="true"><span>CV</span><i></i><i></i><i></i></div>
+        <p class="eyebrow">A blank page, in the best way</p>
+        <h2>Your first resume is a few details away.</h2>
+        <p class="muted">Add your experience once, then shape it for the next role.</p>
+        <a class="button" th:href="@{/resumes/new}">Build my first resume <span aria-hidden="true">→</span></a>
+    </section>
+</main>
+</body>
+</html>

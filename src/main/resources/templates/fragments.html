@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(pageTitle)">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f7fb">
+    <title th:text="${pageTitle} + ' | CV Builder'">CV Builder</title>
+    <link rel="stylesheet" th:href="@{/css/app.css}">
+</head>
+<body>
+<header th:fragment="publicNav" class="topbar">
+    <a class="brand" th:href="@{/login}"><span class="brand-mark">cv.</span>folio</a>
+    <nav class="topbar-links">
+        <a th:href="@{/login}">Sign in</a>
+        <a class="button button-small" th:href="@{/register}">Create account</a>
+    </nav>
+</header>
+<header th:fragment="appNav" class="topbar">
+    <a class="brand" th:href="@{/dashboard}"><span class="brand-mark">cv.</span>folio</a>
+    <nav class="topbar-links">
+        <a th:href="@{/dashboard}">My resumes</a>
+        <form th:action="@{/logout}" method="post">
+            <button class="button button-quiet button-small" type="submit">Sign out</button>
+        </form>
+    </nav>
+</header>
+</body>
+</html>

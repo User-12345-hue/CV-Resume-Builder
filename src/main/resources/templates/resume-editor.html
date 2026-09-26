@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Resume editor')}"></head>
+<body class="app-page">
+<header th:replace="~{fragments :: appNav}"></header>
+<main class="page-wrap editor-wrap">
+    <a class="back-link" th:href="@{/dashboard}">← My resumes</a>
+    <section class="editor-heading">
+        <div>
+            <p class="eyebrow">Make it yours</p>
+            <h1 th:text="${resumeId == null ? 'Build your resume' : 'Edit your resume'}">Build your resume</h1>
+            <p class="muted">Your changes are saved to your account. You can preview and print a PDF at any time.</p>
+        </div>
+        <a class="button button-quiet" th:if="${resumeId != null}" th:href="@{/resumes/{id}/preview(id=${resumeId})}">Preview &amp; print</a>
+    </section>
+
+    <div class="notice notice-success" th:if="${param.saved}">Your resume is saved.</div>
+    <div class="notice notice-success" th:if="${photoMessage}" th:text="${photoMessage}"></div>
+    <div class="notice notice-error" th:if="${photoError}" th:text="${photoError}"></div>
+
+    <div class="editor-layout">
+        <form class="editor-form" th:action="${postUrl}" th:object="${form}" method="post">
+            <section class="editor-section">
+                <div class="section-heading"><span class="section-number">01</span><div><h2>Start with the basics</h2><p class="muted">Give this version a name and make your contact details easy to find.</p></div></div>
+                <div class="field-grid">
+                    <div class="field"><label for="title">Resume name</label><input id="title" th:field="*{title}" maxlength="120" required placeholder="e.g. Product designer — Spring 2026"><small class="field-error" th:errors="*{title}"></small></div>
+                    <div class="field"><label for="fullName">Full name</label><input id="fullName" th:field="*{fullName}" maxlength="120" required autocomplete="name"><small class="field-error" th:errors="*{fullName}"></small></div>
+                    <div class="field"><label for="professionalTitle">Professional title</label><input id="professionalTitle" th:field="*{professionalTitle}" maxlength="120" placeholder="e.g. Product designer"></div>
+                    <div class="field"><label for="email">Email</label><input id="email" th:field="*{email}" type="email" maxlength="254" autocomplete="email"><small class="field-error" th:errors="*{email}"></small></div>
+                    <div class="field"><label for="phone">Phone</label><input id="phone" th:field="*{phone}" type="tel" maxlength="60" autocomplete="tel"></div>
+                    <div class="field"><label for="location">Location</label><input id="location" th:field="*{location}" maxlength="200" placeholder="City, Country"></div>
+                    <div class="field field-wide"><label for="website">Website or LinkedIn</label><input id="website" th:field="*{website}" maxlength="254" placeholder="linkedin.com/in/you"></div>
+                </div>
+            </section>
+
+            <section class="editor-section">
+                <div class="section-heading"><span class="section-number">02</span><div><h2>Tell your story</h2><p class="muted">A few clear, specific details go a long way.</p></div></div>
+                <div class="field"><label for="summary">Profile summary</label><div class="format-bar" role="group" aria-label="Format summary text"><button type="button" data-format="**" data-target="summary" aria-label="Bold selected summary text"><strong>B</strong></button><button type="button" data-format="==" data-target="summary" aria-label="Highlight selected summary text">Highlight</button></div><textarea id="summary" th:field="*{summary}" rows="4" maxlength="10000" placeholder="A short introduction: what you do, what you are good at, and where you want to go."></textarea><small class="field-error" th:errors="*{summary}"></small></div>
+            </section>
+
+            <section class="editor-section">
+                <div class="section-heading"><span class="section-number">03</span><div><h2>Experience &amp; education</h2><p class="muted">Use a new line for each role, school, or accomplishment.</p></div></div>
+                <div class="field"><label for="experience">Work experience</label><div class="format-bar" role="group" aria-label="Format experience text"><button type="button" data-format="**" data-target="experience" aria-label="Bold selected experience text"><strong>B</strong></button><button type="button" data-format="==" data-target="experience" aria-label="Highlight selected experience text">Highlight</button></div><textarea id="experience" th:field="*{experience}" rows="6" maxlength="20000" placeholder="Product designer · Acme Studio · 2022–2025&#10;Led a redesign that improved customer onboarding by 24%."></textarea><small class="field-error" th:errors="*{experience}"></small></div>
+                <div class="field"><label for="education">Education</label><div class="format-bar" role="group" aria-label="Format education text"><button type="button" data-format="**" data-target="education" aria-label="Bold selected education text"><strong>B</strong></button><button type="button" data-format="==" data-target="education" aria-label="Highlight selected education text">Highlight</button></div><textarea id="education" th:field="*{education}" rows="4" maxlength="20000" placeholder="BSc Computer Science · Example University · 2018–2022"></textarea><small class="field-error" th:errors="*{education}"></small></div>
+            </section>
+
+            <section class="editor-section">
+                <div class="section-heading"><span class="section-number">04</span><div><h2>Skills &amp; highlights</h2><p class="muted">Add the details that make this application relevant.</p></div></div>
+                <div class="field"><label for="skills">Skills</label><div class="format-bar" role="group" aria-label="Format skills text"><button type="button" data-format="**" data-target="skills" aria-label="Bold selected skills text"><strong>B</strong></button><button type="button" data-format="==" data-target="skills" aria-label="Highlight selected skills text">Highlight</button></div><textarea id="skills" th:field="*{skills}" rows="3" maxlength="10000" placeholder="Research, prototyping, Figma, facilitation"></textarea><small class="field-error" th:errors="*{skills}"></small></div>
+                <div class="field"><label for="projects">Projects &amp; awards</label><div class="format-bar" role="group" aria-label="Format projects text"><button type="button" data-format="**" data-target="projects" aria-label="Bold selected projects text"><strong>B</strong></button><button type="button" data-format="==" data-target="projects" aria-label="Highlight selected projects text">Highlight</button></div><textarea id="projects" th:field="*{projects}" rows="4" maxlength="20000" placeholder="Selected projects, achievements, or awards"></textarea><small class="field-error" th:errors="*{projects}"></small></div>
+                <div class="field"><label for="certifications">Certifications</label><div class="format-bar" role="group" aria-label="Format certifications text"><button type="button" data-format="**" data-target="certifications" aria-label="Bold selected certifications text"><strong>B</strong></button><button type="button" data-format="==" data-target="certifications" aria-label="Highlight selected certifications text">Highlight</button></div><textarea id="certifications" th:field="*{certifications}" rows="3" maxlength="10000" placeholder="Certification · Issuer · Year"></textarea><small class="field-error" th:errors="*{certifications}"></small></div>
+                <div class="field"><label for="additional">Volunteering, workshops &amp; interests</label><div class="format-bar" role="group" aria-label="Format additional experience"><button type="button" data-format="**" data-target="additional" aria-label="Bold selected additional text"><strong>B</strong></button><button type="button" data-format="==" data-target="additional" aria-label="Highlight selected additional text">Highlight</button></div><textarea id="additional" th:field="*{additional}" rows="3" maxlength="10000" placeholder="Add any other experience you want employers to know about"></textarea><small class="field-error" th:errors="*{additional}"></small></div>
+            </section>
+
+            <section class="editor-section">
+                <div class="section-heading"><span class="section-number">05</span><div><h2>Choose a look</h2><p class="muted">Switch designs whenever you like.</p></div></div>
+                <div class="template-grid">
+                    <label class="template-option" th:each="template : ${templates}">
+                        <input type="radio" th:field="*{templateId}" th:value="${template.id}">
+                        <span class="template-swatch" th:classappend="${template.id}"><i></i><i></i><i></i></span>
+                        <span class="template-copy"><strong th:text="${template.label}">Template</strong><small th:text="${template.description}">Description</small></span>
+                    </label>
+                </div>
+                <small class="field-error" th:errors="*{templateId}"></small>
+            </section>
+
+            <div class="editor-actions">
+                <a class="button button-quiet" th:href="@{/dashboard}">Cancel</a>
+                <button class="button" type="submit">Save resume <span aria-hidden="true">→</span></button>
+            </div>
+        </form>
+
+        <aside class="photo-panel" th:if="${resumeId != null}">
+            <p class="eyebrow">Optional</p>
+            <h2>Add a photo</h2>
+            <p class="muted">A small, professional portrait can add a personal touch.</p>
+            <img class="photo-preview" th:if="${resume != null and resume.hasPhoto()}" th:src="@{/resumes/{id}/photo(id=${resumeId})}" alt="Your profile photo">
+            <div class="photo-placeholder" th:if="${resume == null or !resume.hasPhoto()}" aria-hidden="true">＋</div>
+            <form th:action="@{/resumes/{id}/photo(id=${resumeId})}" method="post" enctype="multipart/form-data" class="form-stack">
+                <label class="button button-quiet file-button" for="photo">Choose an image</label>
+                <input class="visually-hidden" id="photo" name="photo" type="file" accept="image/png,image/jpeg,image/gif" required>
+                <button class="button button-small" type="submit">Upload photo</button>
+                <small class="field-hint">PNG, JPEG or GIF. Up to 5 MB.</small>
+            </form>
+        </aside>
+    </div>
+</main>
+<script th:src="@{/js/editor.js}" defer></script>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Create account')}"></head>
+<body class="auth-page">
+<header th:replace="~{fragments :: publicNav}"></header>
+<main class="auth-layout">
+    <section class="auth-aside">
+        <p class="eyebrow">A better way to show up</p>
+        <h1>A polished CV should be the easy part.</h1>
+        <p>Keep your experience in one place. Create a version for every opportunity and export it when you are ready.</p>
+        <div class="auth-proof"><span>02</span> Start free. Come back whenever you need.</div>
+    </section>
+    <section class="auth-card">
+        <p class="eyebrow">Get started</p>
+        <h2>Create your account</h2>
+        <p class="muted">Your account keeps your resumes private and organized.</p>
+        <form th:action="@{/register}" th:object="${form}" method="post" class="form-stack">
+            <label for="displayName">Your name</label>
+            <input id="displayName" th:field="*{displayName}" autocomplete="name" required maxlength="100">
+            <small class="field-error" th:errors="*{displayName}"></small>
+            <label for="email">Email address</label>
+            <input id="email" th:field="*{email}" type="email" autocomplete="email" required maxlength="254">
+            <small class="field-error" th:errors="*{email}"></small>
+            <label for="password">Password</label>
+            <input id="password" th:field="*{password}" type="password" autocomplete="new-password" required minlength="12" maxlength="72">
+            <small class="field-hint">Use at least 12 characters.</small>
+            <small class="field-error" th:errors="*{password}"></small>
+            <button class="button button-full" type="submit">Create account <span aria-hidden="true">→</span></button>
+        </form>
+        <p class="auth-switch">Already have an account? <a th:href="@{/login}">Sign in</a></p>
+    </section>
+</main>
+</body>
+</html>

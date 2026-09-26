@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Resume preview')}"></head>
+<body class="app-page preview-page">
+<header class="topbar no-print">
+    <a class="brand" th:href="@{/dashboard}"><span class="brand-mark">cv.</span>folio</a>
+    <nav class="topbar-links">
+        <a class="button button-quiet button-small" th:href="@{/resumes/{id}/edit(id=${resume.id})}">← Edit resume</a>
+        <button class="button button-small" type="button" onclick="window.print()">Print / Save PDF <span aria-hidden="true">↗</span></button>
+    </nav>
+</header>
+<main class="preview-wrap">
+    <div class="print-hint no-print"><span>Ready when you are.</span> Choose “Save as PDF” in the print dialog to download your resume.</div>
+    <article class="resume-sheet" th:classappend="${resume.templateId}">
+        <header class="sheet-header">
+            <div class="sheet-identity">
+                <p class="sheet-kicker" th:if="${resume.professionalTitle != null}" th:text="${resume.professionalTitle}">Professional title</p>
+                <h1 th:text="${resume.fullName}">Your name</h1>
+                <p class="sheet-contact">
+                    <span th:if="${resume.email != null}" th:text="${resume.email}"></span>
+                    <span th:if="${resume.phone != null}" th:text="${resume.phone}"></span>
+                    <span th:if="${resume.location != null}" th:text="${resume.location}"></span>
+                    <span th:if="${resume.website != null}" th:text="${resume.website}"></span>
+                </p>
+            </div>
+            <img class="sheet-photo" th:if="${resume.hasPhoto()}" th:src="@{/resumes/{id}/photo(id=${resume.id})}" alt="Profile photo">
+        </header>
+        <section class="sheet-section" th:if="${resume.summary != null}">
+            <h2>Profile</h2><p class="sheet-copy" th:utext="${formattedSummary}"></p>
+        </section>
+        <section class="sheet-section" th:if="${resume.experience != null}">
+            <h2>Experience</h2><p class="sheet-copy" th:utext="${formattedExperience}"></p>
+        </section>
+        <section class="sheet-section" th:if="${resume.education != null}">
+            <h2>Education</h2><p class="sheet-copy" th:utext="${formattedEducation}"></p>
+        </section>
+        <section class="sheet-section" th:if="${resume.skills != null}">
+            <h2>Skills</h2><p class="sheet-copy" th:utext="${formattedSkills}"></p>
+        </section>
+        <section class="sheet-section" th:if="${resume.projects != null}">
+            <h2>Projects &amp; awards</h2><p class="sheet-copy" th:utext="${formattedProjects}"></p>
+        </section>
+        <section class="sheet-section" th:if="${resume.certifications != null}">
+            <h2>Certifications</h2><p class="sheet-copy" th:utext="${formattedCertifications}"></p>
+        </section>
+        <section class="sheet-section" th:if="${resume.additional != null}">
+            <h2>More about me</h2><p class="sheet-copy" th:utext="${formattedAdditional}"></p>
+        </section>
+    </article>
+</main>
+</body>
+</html>
